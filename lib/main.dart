@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'screens/login_screen.dart'; // Page de connexion
 import 'screens/home_page.dart'; // Page d'accueil
 import 'screens/verify_email_screen.dart'; // Page de vérification de l'email
+import 'screens/reset_password_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

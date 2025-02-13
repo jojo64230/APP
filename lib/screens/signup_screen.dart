@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart'; // Retour à la page de login après inscription réussie
+import 'verify_email_screen.dart'; // Nouvelle page pour la vérification de l'email
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -60,17 +61,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Future<void> _signUp() async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       );
 
-      // Si l'inscription est réussie, rediriger vers la page de login
-      if (userCredential.user != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
-      }
+      // Envoyer un email de vérification
+      await userCredential.user?.sendEmailVerification();
+
+      // Rediriger vers la page de vérification de l'e-mail
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => VerifyEmailScreen()),
+      );
     } catch (e) {
       setState(() {
         _errorMessage = 'Sign Up failed: ${e.toString()}';
